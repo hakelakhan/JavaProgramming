@@ -29,7 +29,8 @@ public class MatrixSpiralTraversal {
         System.out.println();
         System.out.println("Spiral Traversal as follows : ");
 
-        printTraversal(0, 0, rows, cols, matrix, RIGHT);
+        //printTraversalMethod1(0, 0, rows, cols, matrix, DOWN);
+        printTraversalMethod2(matrix, rows, cols);
     }
 
     enum Direction {
@@ -46,7 +47,50 @@ public class MatrixSpiralTraversal {
         return i >= 0 && i < rows &&  j >= 0 && j < cols;
     }
 
-    private static void printTraversal(int i, int j, int rows, int cols, int[][] matrix, Direction currentDirection) {
+    private static  void printTraversalMethod2 (int matrix[][], int rows, int cols) {
+        int i = 0;
+        int j = 0;
+
+        int hu = 0;
+        int vr = 0;
+        int vl = 0;
+        int hd = 0;
+        while (true) {
+            i = hu;
+            for(j = vr; j < cols - vr; j++) {
+                System.out.printf("%-5d", matrix[i][j]);
+            }
+            j--;
+            hu++;       //1
+            if(traversalCompleted(hu, hd, vl, vr, rows, cols)) return;
+            for(i = hu; i < rows - hd; i++) {
+                System.out.printf("%-5d", matrix[i][j]);
+            }
+            i--;
+            vr++;       //1
+            if(traversalCompleted(hu, hd, vl, vr, rows, cols)) return;
+            for(j = j - vr; j >= vl; j--) {
+                System.out.printf("%-5d", matrix[i][j]);
+            }
+            j++;
+            hd++; //1
+            if(traversalCompleted(hu, hd, vl, vr, rows, cols)) return;
+            for(i = i - hd; i >= hu; i--) {
+                System.out.printf("%-5d", matrix[i][j]);
+            }
+            i++;
+            vl++;    //1;
+            if(traversalCompleted(hu, hd, vl, vr, rows, cols)) return;
+        }
+
+    }
+
+    private static boolean traversalCompleted(int hu, int hd, int vl, int vr, int rows, int cols) {
+        return hu + hd == rows || vl + vr == cols;
+    }
+
+    //Time Complexity O(rows * cols) Space Complexity O(rows * cols)
+    private static void printTraversalMethod1(int i, int j, int rows, int cols, int[][] matrix, Direction currentDirection) {
         if(isInsideBoundray(i, j, rows, cols) && !isVisited(i, j)) {
                     System.out.printf("%-5d", matrix[i][j]);
                     visitedPositions.add(i + "-" + j);
@@ -79,7 +123,7 @@ public class MatrixSpiralTraversal {
             currentDirection = currentDirection.getNext();
         }
         if(visitedPositions.size() != rows * cols)
-            printTraversal(i, j, rows, cols, matrix, currentDirection);//return this;
+            printTraversalMethod1(i, j, rows, cols, matrix, currentDirection);//return this;
     }
 
 
