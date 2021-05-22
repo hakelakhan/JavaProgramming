@@ -28,18 +28,9 @@ public class DirectedGraph extends UndirectedGraph{
         int unvisitedNode = 0;
         while(unvisitedNode != -1) {
 //            dfs(unvisitedNode, visitedNodes, n -> System.out.printf("%-5d", n));
-            dfs(unvisitedNode, visitedNodes, n -> {}, topSort);
+            dfs(unvisitedNode, visitedNodes, n -> {}, (n -> topSort.push(n)));
             unvisitedNode = getNextUnvisitedNode(visitedNodes, V);
         }
         System.out.println(topSort.toString());
-    }
-    void dfs(int s, Set<Integer> visitedNodes, Consumer<Integer> consumer, Stack<Integer> topSort) {
-        if(!visitedNodes.contains(s)) {
-            visitedNodes.add(s);
-            consumer.accept(s);
-            ArrayList<Integer> connectedVertices = getConnectedVertices(s);
-            connectedVertices.forEach( node -> dfs(node, visitedNodes, consumer, topSort));
-            topSort.push(s);
-        }
     }
 }

@@ -99,7 +99,7 @@ public class UndirectedGraph implements Graph{
     boolean isGraphConnected() {
         Set<Integer> visitedNodes = new HashSet<>();
         //dfs(0, visitedNodes, (n -> System.out.printf("%-5d", n)));
-        dfs(0, visitedNodes, noOp -> {});
+        dfs(0, visitedNodes);
         return areAllNodesVisited(visitedNodes, V);
     }
 
@@ -114,12 +114,19 @@ public class UndirectedGraph implements Graph{
         return -1;
     }
 
+    void dfs(int s, Set<Integer> visitedNodes) {
+        dfs(s, visitedNodes, noOp -> {}, noOp -> {});
+    }
     void dfs(int s, Set<Integer> visitedNodes, Consumer<Integer> consumer) {
+        dfs(s, visitedNodes, consumer, noOp -> {});
+    }
+    void dfs(int s, Set<Integer> visitedNodes, Consumer<Integer> consumerAtVisiting, Consumer<Integer> consumerBeforeReturning) {
         if(!visitedNodes.contains(s)) {
             visitedNodes.add(s);
-            consumer.accept(s);
+            consumerAtVisiting.accept(s);
             ArrayList<Integer> connectedVertices = getConnectedVertices(s);
-            connectedVertices.forEach( node -> dfs(node, visitedNodes, consumer));
+            connectedVertices.forEach( node -> dfs(node, visitedNodes, consumerAtVisiting, consumerBeforeReturning));
+            consumerBeforeReturning.accept(s);
         }
     }
 }
