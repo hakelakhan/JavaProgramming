@@ -47,6 +47,7 @@ public class MatrixSpiralTraversal {
         return i >= 0 && i < rows &&  j >= 0 && j < cols;
     }
 
+    //Time Complexity O(n) n is number of elements in matrix, Space Complexity O(1)
     private static  void printTraversalMethod2 (int matrix[][], int rows, int cols) {
         int i = 0;
         int j = 0;
